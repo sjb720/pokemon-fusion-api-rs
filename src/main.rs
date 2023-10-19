@@ -26,7 +26,6 @@ async fn main() {
     // build our application with a single route
     let app = Router::new()
         .route("/", get(ping))
-        .route("/pokemon/name/:id", get(name_handler))
         .route("/pokemon/fuse/:id1/:id2", get(fuse_handler))
         .with_state(Arc::clone(&shared_state));
 
@@ -117,16 +116,6 @@ async fn fuse_handler(Path((id1, id2)): Path<(u16, u16)>, State(state): State<Sh
             }
         },
         None => {"Failed to get pokemon 1 data".to_string()}
-    }
-}
-
-async fn name_handler(Path(id): Path<u16>, State(state): State<SharedState>) -> String {
-    let resp = get_pokemon_data(id).await;
-
-    
-    match resp {
-        Err(err) => "Failed to grab".to_string(),
-        Ok(msg) => msg.name
     }
 }
 
