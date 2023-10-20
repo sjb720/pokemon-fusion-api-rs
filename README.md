@@ -10,6 +10,5 @@ To get running, make sure you have rust installed. Then run `cargo run` and you'
 
 This is just a fun project to help myself learn rust! Not sure what will come of it but here are some future plans:
 
-- Calculate fusion stats
-- Cache fusion pokemon as requested
+- Calculate fusion abilities
 - Host images of fused pokemon (and possibly unfused)
