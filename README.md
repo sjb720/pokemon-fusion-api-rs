@@ -17,7 +17,9 @@ Where `id1` is the main Pokemon and `id2` is the Pokemon to be fused onto the ma
 
 # Features
 
-- Pokemon caching for requested pokemon
+- Pokemon caching for requested pokemon.
+- Fusion logic built in! Just pass two IDs and get back the new Pokemon's.
+- Static file serving for fusion images.
 
 # Future Plans
 
