@@ -1,12 +1,19 @@
-## Pokemon fusion API! (Rust)
+# Pokemon fusion API! (Rust)
 
 To get running, make sure you have rust installed. Then run `cargo run` and you're set!
 
-# Routes
+## Routes
 
-`/` Will return a string if the API is up and healthy.
+### Health check
 
-`/pokemon/fuse/:id1/:id2` Where id1 is the main Pokemon and id2 is the Pokemon to be fused onto the main Pokemon. (Order matters!)
+- `/` Will return a string if the API is up and healthy.
+
+### Fusions
+
+Where `id1` is the main Pokemon and `id2` is the Pokemon to be fused onto the main Pokemon. (First is head second is body.)
+
+- `/pokemon/fuse/:id1/:id2` Gets a JSON object with the fused Pokemon's information. Returns MISSING NO if it fails.
+- `/pokemon/fuse/:id1/:id2/iamge` Gets a png of the fused Pokemon. Returns a 404 if no image is available.
 
 # Features
 
