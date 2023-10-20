@@ -18,3 +18,4 @@ This is just a fun project to help myself learn rust! Not sure what will come of
 
 - Calculate fusion abilities
 - Host images of fused pokemon (and possibly unfused)
+- Save cached data locally and reload the state on start. Allow for cache clearning by deleting cached file. (Pokemon might change once every year and it's almost always by addition so likely they will never change.)
