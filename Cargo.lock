@@ -698,6 +698,7 @@ dependencies = [
  "hyper",
  "listenfd",
  "reqwest",
+ "serde",
  "serde_json",
  "tokio",
  "tower",
