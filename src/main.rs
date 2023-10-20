@@ -2,8 +2,12 @@ use axum::{
     debug_handler,
     routing::get,
     Router, extract::{ Path, State},
-    Json
+    http::{header, StatusCode, HeaderMap},
+    Json, 
+    body::StreamBody,
+    response::IntoResponse,
 };
+
 use std::{
     collections::HashMap,
     sync::{Arc, RwLock},
@@ -11,6 +15,7 @@ use std::{
 
 use serde_json::Value;
 use serde::Serialize;
+use tokio_util::io::ReaderStream;
 
 
 type SharedState = Arc<RwLock<AppState>>;
@@ -29,6 +34,7 @@ async fn main() {
     let app = Router::new()
         .route("/", get(ping))
         .route("/pokemon/fuse/:id1/:id2", get(fuse_handler))
+        .route("/pokemon/fuse/:id1/:id2/image", get(img_handler))
         .with_state(Arc::clone(&shared_state));
 
     // run it with hyper on localhost:3000
@@ -58,6 +64,27 @@ struct Pokemon {
     name: String,
     stats: Stats,
     types: (String, String)
+}
+
+#[debug_handler]
+async fn img_handler(Path((id1, id2)): Path<(u16, u16)>) -> impl IntoResponse {
+    let file_name = format!("{}.{}.png",id1, id2);
+
+    let file = match tokio::fs::File::open(format!("assets/custom-fusions/{}", file_name)).await {
+        Ok(file) => file,
+        Err(err) => return Err((StatusCode::NOT_FOUND, format!("File not found: {}", err))),
+    };
+    // convert the `AsyncRead` into a `Stream`
+    let stream = ReaderStream::new(file);
+    // convert the `Stream` into an `axum::body::HttpBody`
+    let body = StreamBody::new(stream);
+
+    let mut headers = HeaderMap::new();
+
+    headers.insert(header::CONTENT_TYPE, "image/png".parse().unwrap());
+    headers.insert(header::CONTENT_DISPOSITION, format!("attachment; filename=\"{}\"", file_name).parse().unwrap());
+
+    Ok((headers,body))
 }
 
 #[debug_handler]
